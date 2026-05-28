@@ -614,7 +614,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
       })()}
 
       {/* Laptop hotspot */}
-      <Hot id="computer" label="Technical Work" anchor={iso(190, 145, 165)}>
+      <Hot id="computer" label="projects" anchor={iso(190, 145, 165)}>
         {(() => {
           const x1 = 160,
             x2 = 235,
@@ -731,7 +731,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
       </Hot>
 
       {/* Paper hotspot */}
-      <Hot id="paper" label="Read Resume" anchor={iso(258, 95, 165)}>
+      <Hot id="paper" label="resume" anchor={iso(258, 95, 165)}>
         {(() => {
           const x1 = 242,
             x2 = 278,
@@ -800,7 +800,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
       </Hot>
 
       {/* Synth hotspot */}
-      <Hot id="music" label="Listen" anchor={iso(60, 95, 280)}>
+      <Hot id="music" label="music" anchor={iso(60, 95, 280)}>
         {(() => {
           const cx = 60,
             cz = 280;
