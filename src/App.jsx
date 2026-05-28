@@ -4,15 +4,14 @@ import Modal from './components/Modal.jsx';
 import { IconGithub, IconMail } from './components/icons.jsx';
 import {
   ComputerPanel,
-  PaperPanel,
   MusicPanel,
   MoodPanel,
   ContactPanel,
 } from './components/panels/index.js';
+import { EMAIL_MAILTO, GITHUB_URL, RESUME_URL } from './siteLinks.js';
 
 const PANELS = {
   computer: { Comp: ComputerPanel, size: 'wide' },
-  paper: { Comp: PaperPanel, size: 'wide' },
   music: { Comp: MusicPanel, size: 'wide' },
   moodboard: { Comp: MoodPanel, size: 'wide' },
   contact: { Comp: ContactPanel, size: 'narrow' },
@@ -31,6 +30,14 @@ export default function App() {
   const [hovered, setHovered] = React.useState(null);
   const Panel = activeModal ? PANELS[activeModal] : null;
 
+  const openPanel = (id) => {
+    if (id === 'paper') {
+      window.open(RESUME_URL, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    setActiveModal(id);
+  };
+
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       <header className="px-6 md:px-12 pt-6 flex items-start justify-between gap-6 shrink-0">
@@ -47,7 +54,7 @@ export default function App() {
       <main className="flex-1 min-h-0 flex items-center justify-center px-2 md:px-6 py-2 relative">
         <div className="w-full h-full max-w-[1100px] relative">
           <Room
-            onHotspot={(id) => setActiveModal(id)}
+            onHotspot={openPanel}
             hovered={hovered}
             setHovered={setHovered}
           />
@@ -60,7 +67,7 @@ export default function App() {
             {FOOT_ITEMS.map((item) => (
               <button
                 key={item.id}
-                onClick={() => setActiveModal(item.id)}
+                onClick={() => openPanel(item.id)}
                 className={`footlink text-sm md:text-base font-medium text-ink-800 hover:text-ink-900 transition ${
                   activeModal === item.id ? 'active' : ''
                 }`}
@@ -71,10 +78,18 @@ export default function App() {
           </nav>
           <div className="flex items-center gap-4 text-xs font-mono text-ink-700">
             <span>© 2026 — handmade in HTML</span>
-            <a className="hover:text-ink-900 cursor-pointer inline-flex items-center gap-1.5">
+            <a
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-ink-900 cursor-pointer inline-flex items-center gap-1.5"
+            >
               <IconGithub size={14} /> github
             </a>
-            <a className="hover:text-ink-900 cursor-pointer inline-flex items-center gap-1.5">
+            <a
+              href={EMAIL_MAILTO}
+              className="hover:text-ink-900 cursor-pointer inline-flex items-center gap-1.5"
+            >
               <IconMail size={14} /> email
             </a>
           </div>
@@ -91,4 +106,3 @@ export default function App() {
     </div>
   );
 }
-
