@@ -39,12 +39,6 @@ export default function App() {
     <div className="min-h-screen flex flex-col room-bg">
       <header className="px-6 md:px-12 pt-8 flex items-start justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2 text-ink-700">
-            <span className="w-2 h-2 rounded-full bg-sage-500 inline-block" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.22em]">
-              studio · open
-            </span>
-          </div>
           <h1 className="font-serif text-4xl md:text-5xl text-ink-900 leading-none mt-2">
             joey tenesaca
             <span className="text-sage-500 font-serif-it">.</span>

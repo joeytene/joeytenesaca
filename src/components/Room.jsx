@@ -75,22 +75,22 @@ export default function Room({ onHotspot, hovered, setHovered }) {
     >
       <defs>
         <linearGradient id="wallR" x1="0" x2="1" y1="0" y2="0.4">
-          <stop offset="0" stopColor="#eceae7" />
-          <stop offset="1" stopColor="#c8c4be" />
+          <stop offset="0" stopColor="#dadcd9" />
+          <stop offset="1" stopColor="#a8acaa" />
         </linearGradient>
         <linearGradient id="wallL" x1="1" x2="0" y1="0" y2="0.4">
-          <stop offset="0" stopColor="#e0ddd9" />
-          <stop offset="1" stopColor="#bcb8b2" />
+          <stop offset="0" stopColor="#ced0cd" />
+          <stop offset="1" stopColor="#9a9d9a" />
         </linearGradient>
 
         <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#6a6864" />
-          <stop offset="1" stopColor="#3e3c38" />
+          <stop offset="0" stopColor="#5e6260" />
+          <stop offset="1" stopColor="#363a38" />
         </linearGradient>
 
         <linearGradient id="desktop" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#c8b48c" />
-          <stop offset="1" stopColor="#a09070" />
+          <stop offset="0" stopColor="#a89c80" />
+          <stop offset="1" stopColor="#7e7458" />
         </linearGradient>
 
         <linearGradient id="screen" x1="0" y1="0" x2="0" y2="1">
@@ -104,10 +104,20 @@ export default function Room({ onHotspot, hovered, setHovered }) {
         </filter>
 
         <pattern id="cork" width="6" height="6" patternUnits="userSpaceOnUse">
-          <rect width="6" height="6" fill="#c8c4be" />
-          <circle cx="2" cy="2" r="0.5" fill="#a8a49e" opacity=".55" />
-          <circle cx="5" cy="4" r="0.4" fill="#a8a49e" opacity=".4" />
-          <circle cx="1" cy="5" r="0.3" fill="#a8a49e" opacity=".3" />
+          <rect width="6" height="6" fill="#c5c8c0" />
+          <circle cx="2" cy="2" r="0.5" fill="#a5a89e" opacity=".55" />
+          <circle cx="5" cy="4" r="0.4" fill="#a5a89e" opacity=".4" />
+          <circle cx="1" cy="5" r="0.3" fill="#a5a89e" opacity=".3" />
+        </pattern>
+
+        <pattern id="concrete" width="14" height="14" patternUnits="userSpaceOnUse">
+          <rect width="14" height="14" fill="transparent" />
+          <circle cx="2" cy="3" r="0.4" fill="#2a2825" opacity=".22" />
+          <circle cx="9" cy="2" r="0.3" fill="#2a2825" opacity=".18" />
+          <circle cx="5" cy="8" r="0.3" fill="#2a2825" opacity=".15" />
+          <circle cx="12" cy="10" r="0.35" fill="#2a2825" opacity=".2" />
+          <circle cx="3" cy="12" r="0.25" fill="#2a2825" opacity=".14" />
+          <circle cx="8" cy="13" r="0.4" fill="#2a2825" opacity=".22" />
         </pattern>
       </defs>
 
@@ -123,6 +133,29 @@ export default function Room({ onHotspot, hovered, setHovered }) {
         stroke={OUTLINE}
         strokeWidth="1.2"
       />
+      <polygon
+        points={poly([
+          [0, 0, 0],
+          [0, 300, 0],
+          [400, 300, 0],
+          [400, 0, 0],
+        ])}
+        fill="url(#concrete)"
+        stroke="none"
+      />
+      {/* Vertical streak marks on back-right wall (weathered concrete) */}
+      {[60, 145, 210, 290, 348].map((x, i) => (
+        <line
+          key={`sr-${i}`}
+          x1={iso(x, 280, 0)[0]}
+          y1={iso(x, 280, 0)[1]}
+          x2={iso(x, 20, 0)[0]}
+          y2={iso(x, 20, 0)[1]}
+          stroke="#2a2825"
+          strokeOpacity={[0.08, 0.12, 0.06, 0.1, 0.07][i]}
+          strokeWidth={[0.8, 1.2, 0.6, 1, 0.7][i]}
+        />
+      ))}
 
       {/* Back-left wall (x=0) */}
       <polygon
@@ -136,6 +169,29 @@ export default function Room({ onHotspot, hovered, setHovered }) {
         stroke={OUTLINE}
         strokeWidth="1.2"
       />
+      <polygon
+        points={poly([
+          [0, 0, 0],
+          [0, 300, 0],
+          [0, 300, 400],
+          [0, 0, 400],
+        ])}
+        fill="url(#concrete)"
+        stroke="none"
+      />
+      {/* Vertical streak marks on back-left wall */}
+      {[45, 175, 240, 310, 360].map((z, i) => (
+        <line
+          key={`sl-${i}`}
+          x1={iso(0, 280, z)[0]}
+          y1={iso(0, 280, z)[1]}
+          x2={iso(0, 20, z)[0]}
+          y2={iso(0, 20, z)[1]}
+          stroke="#2a2825"
+          strokeOpacity={[0.07, 0.11, 0.05, 0.13, 0.08][i]}
+          strokeWidth={[0.7, 1.1, 0.6, 1.2, 0.8][i]}
+        />
+      ))}
 
       {/* Baseboard trim */}
       <polygon
@@ -145,7 +201,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
           [400, 8, 0],
           [400, 0, 0],
         ])}
-        fill="#d8d5cf"
+        fill="#d5d8d2"
         stroke={OUTLINE}
         strokeWidth="0.8"
       />
@@ -156,52 +212,95 @@ export default function Room({ onHotspot, hovered, setHovered }) {
           [0, 8, 400],
           [0, 0, 400],
         ])}
-        fill="#cac6c0"
+        fill="#c6cac1"
         stroke={OUTLINE}
         strokeWidth="0.8"
       />
 
-      {/* Small framed print */}
+      {/* Brutalist window — back-left wall, grid of teal panes */}
       <g>
+        {/* Outer frame (dark concrete) */}
         <polygon
           points={poly([
-            [0, 180, 80],
-            [0, 250, 80],
-            [0, 250, 140],
-            [0, 180, 140],
+            [0, 170, 60],
+            [0, 260, 60],
+            [0, 260, 170],
+            [0, 170, 170],
           ])}
-          fill="#f0eeea"
+          fill="#2a2825"
           stroke={OUTLINE}
-          strokeWidth="1"
+          strokeWidth="1.2"
         />
-        <polygon
-          points={poly([
-            [0, 188, 88],
-            [0, 242, 88],
-            [0, 242, 132],
-            [0, 188, 132],
-          ])}
-          fill="#6b8e8a"
-          stroke={OUTLINE}
-          strokeOpacity=".3"
-          strokeWidth="0.5"
-        />
+        {/* Glass panel grid: 2 rows × 3 columns of teal panes */}
+        {[0, 1].map((row) =>
+          [0, 1, 2].map((col) => {
+            const yBase = 178 + row * 40;
+            const zBase = 68 + col * 32;
+            // Slightly different teal saturation per pane for variation
+            const tones = [
+              ['#5a9aa0', '#4a8a92', '#6dafb4'],
+              ['#3e7a82', '#5a9aa0', '#4a8a92'],
+            ];
+            const fill = tones[row][col];
+            return (
+              <g key={`win-${row}-${col}`}>
+                <polygon
+                  points={poly([
+                    [0, yBase, zBase],
+                    [0, yBase + 34, zBase],
+                    [0, yBase + 34, zBase + 28],
+                    [0, yBase, zBase + 28],
+                  ])}
+                  fill={fill}
+                  stroke="none"
+                />
+                {/* Reflection highlight at top of pane */}
+                <polygon
+                  points={poly([
+                    [0, yBase + 2, zBase + 2],
+                    [0, yBase + 8, zBase + 2],
+                    [0, yBase + 8, zBase + 14],
+                    [0, yBase + 2, zBase + 14],
+                  ])}
+                  fill="#a8d0d4"
+                  opacity=".25"
+                />
+              </g>
+            );
+          })
+        )}
+        {/* Vertical mullions */}
+        {[100, 132].map((z, i) => (
+          <line
+            key={`mv-${i}`}
+            x1={iso(0, 172, z)[0]}
+            y1={iso(0, 172, z)[1]}
+            x2={iso(0, 258, z)[0]}
+            y2={iso(0, 258, z)[1]}
+            stroke="#1a1816"
+            strokeWidth="1.5"
+          />
+        ))}
+        {/* Horizontal mullion (middle) */}
         <line
-          {...(() => {
-            const [a, b] = iso(0, 212, 88);
-            const [c, d] = iso(0, 212, 132);
-            return { x1: a, y1: b, x2: c, y2: d };
-          })()}
-          stroke="#6b8e8a"
-          strokeWidth="1"
+          x1={iso(0, 216, 62)[0]}
+          y1={iso(0, 216, 62)[1]}
+          x2={iso(0, 216, 168)[0]}
+          y2={iso(0, 216, 168)[1]}
+          stroke="#1a1816"
+          strokeWidth="1.5"
         />
-        <circle
-          cx={iso(0, 224, 118)[0]}
-          cy={iso(0, 224, 118)[1]}
-          r="3.5"
-          fill="#3a3835"
+        {/* Bottom sill ledge */}
+        <polygon
+          points={poly([
+            [0, 168, 58],
+            [0, 174, 58],
+            [0, 174, 172],
+            [0, 168, 172],
+          ])}
+          fill="#4a4845"
           stroke={OUTLINE}
-          strokeWidth="0.6"
+          strokeWidth="0.7"
         />
       </g>
 
@@ -259,7 +358,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
         />
 
         {polaroid(125, 80, 50, 55, '#9aa0a8', 'p1')}
-        {polaroid(185, 72, 55, 60, '#6b8e8a', 'p2')}
+        {polaroid(185, 72, 55, 60, '#4a8a92', 'p2')}
         {polaroid(250, 82, 50, 50, '#cac6c0', 'p3')}
         {polaroid(310, 75, 50, 55, '#3a3835', 'p4')}
         {polaroid(128, 150, 55, 55, '#b0c4be', 'p5')}
@@ -273,7 +372,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
             [235, 200, 0],
             [193, 200, 0],
           ])}
-          fill="#6b8e8a"
+          fill="#4a8a92"
           stroke={OUTLINE}
           strokeOpacity=".3"
           strokeWidth="0.5"
@@ -286,7 +385,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
             y1={iso(195, y, 0)[1]}
             x2={iso(233, y, 0)[0]}
             y2={iso(233, y, 0)[1]}
-            stroke="#4a6a66"
+            stroke="#2e5a62"
             strokeOpacity=".5"
             strokeWidth="0.5"
           />
@@ -390,8 +489,8 @@ export default function Room({ onHotspot, hovered, setHovered }) {
           [330, 0.4, 330],
           [80, 0.4, 330],
         ])}
-        fill="#cec8bc"
-        stroke="#8a9a94"
+        fill="#7a7e78"
+        stroke="#4a4e48"
         strokeWidth="1.2"
       />
       <polygon
@@ -402,7 +501,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
           [92, 0.5, 318],
         ])}
         fill="none"
-        stroke="#9aa09a"
+        stroke="#5e625c"
         strokeWidth="0.6"
         strokeDasharray="3 3"
       />
@@ -414,9 +513,87 @@ export default function Room({ onHotspot, hovered, setHovered }) {
           [150, 0.6, 210],
         ])}
         fill="none"
-        stroke="#9aa09a"
+        stroke="#5e625c"
         strokeWidth="0.8"
       />
+
+      {/* ── Floor cables: drawn before desk so desk renders on top of them ── */}
+      {(() => {
+        return (
+          <g style={{ pointerEvents: 'none' }}>
+            {/* Synth power: short cable loop on floor behind synth */}
+            {(() => {
+              const start = iso(60, 0.6, 263);
+              const c1    = iso(40, 0.6, 250);
+              const c2    = iso(20, 0.6, 230);
+              const end   = iso(10, 0.6, 200);
+              return (
+                <path
+                  d={`M ${start[0]} ${start[1]} C ${c1[0]} ${c1[1]}, ${c2[0]} ${c2[1]}, ${end[0]} ${end[1]}`}
+                  fill="none" stroke="#1a1816" strokeWidth="1.8" strokeLinecap="round" strokeOpacity=".95"
+                />
+              );
+            })()}
+            {/* Small power brick on floor beside synth */}
+            <polygon
+              points={poly([
+                [12, 0.4, 198],
+                [28, 0.4, 198],
+                [28, 0.4, 208],
+                [12, 0.4, 208],
+              ])}
+              fill="#2a2825"
+              stroke="#1a1816"
+              strokeWidth="0.5"
+            />
+            <polygon
+              points={poly([
+                [12, 0.4, 198],
+                [28, 0.4, 198],
+                [28, 5,   198],
+                [12, 5,   198],
+              ])}
+              fill="#3a3835"
+              stroke="#1a1816"
+              strokeWidth="0.4"
+            />
+            {/* Coiled excess cable on floor near front of desk */}
+            {(() => {
+              const p1 = iso(245, 0.6, 256);
+              const p2 = iso(258, 0.6, 264);
+              const p3 = iso(252, 0.6, 274);
+              const p4 = iso(240, 0.6, 268);
+              return (
+                <path
+                  d={`M ${p1[0]} ${p1[1]} Q ${p2[0]} ${p2[1] - 2}, ${p3[0]} ${p3[1]} Q ${p4[0]} ${p4[1] + 2}, ${p1[0] + 2} ${p1[1] + 3}`}
+                  fill="none" stroke="#1a1816" strokeWidth="1.2" strokeLinecap="round" strokeOpacity=".85"
+                />
+              );
+            })()}
+            {/* Power strip on floor against back wall */}
+            <polygon
+              points={poly([
+                [350, 0.4, 118],
+                [385, 0.4, 118],
+                [385, 0.4, 128],
+                [350, 0.4, 128],
+              ])}
+              fill="#2a2825"
+              stroke="#1a1816"
+              strokeWidth="0.6"
+            />
+            {[356, 364, 372, 380].map((x, i) => (
+              <circle
+                key={`out-${i}`}
+                cx={iso(x, 0.6, 123)[0]}
+                cy={iso(x, 0.6, 123)[1]}
+                r="0.9"
+                fill="#0a0908"
+              />
+            ))}
+          </g>
+        );
+      })()}
 
       {/* Desk */}
       {(() => {
@@ -541,7 +718,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
               y1={iso(cx + 2, 105, cz + 1)[1]}
               x2={iso(cx + 5, 130, cz + 3)[0]}
               y2={iso(cx + 5, 130, cz + 3)[1]}
-              stroke="#6b8e8a"
+              stroke="#4a8a92"
               strokeWidth="2"
             />
             <line
@@ -551,63 +728,6 @@ export default function Room({ onHotspot, hovered, setHovered }) {
               y2={iso(cx - 3, 122, cz - 3)[1]}
               stroke="#3a3835"
               strokeWidth="2"
-            />
-          </g>
-        );
-      })()}
-
-      {/* Mug */}
-      {(() => {
-        const cx = 175,
-          cz = 218;
-        return (
-          <g>
-            <ellipse
-              cx={iso(cx, 85, cz)[0]}
-              cy={iso(cx, 85, cz)[1]}
-              rx="8"
-              ry="4"
-              fill="#3a2d22"
-              opacity=".25"
-            />
-            <polygon
-              points={poly([
-                [cx - 7, 85, cz - 6],
-                [cx + 7, 85, cz - 6],
-                [cx + 7, 98, cz - 6],
-                [cx - 7, 98, cz - 6],
-              ])}
-              fill="#f0eeea"
-              stroke={OUTLINE}
-              strokeWidth="0.7"
-            />
-            <polygon
-              points={poly([
-                [cx + 7, 85, cz - 6],
-                [cx + 7, 85, cz + 6],
-                [cx + 7, 98, cz + 6],
-                [cx + 7, 98, cz - 6],
-              ])}
-              fill="#dedad6"
-              stroke={OUTLINE}
-              strokeWidth="0.7"
-            />
-            <polygon
-              points={poly([
-                [cx - 7, 98, cz - 6],
-                [cx + 7, 98, cz - 6],
-                [cx + 7, 98, cz + 6],
-                [cx - 7, 98, cz + 6],
-              ])}
-              fill="#6b8e8a"
-              stroke={OUTLINE}
-              strokeWidth="0.5"
-            />
-            <path
-              d={`M ${iso(cx + 7, 88, cz - 2)[0]} ${iso(cx + 7, 88, cz - 2)[1]} q 5 -2 5 4 q 0 4 -5 4`}
-              fill="none"
-              stroke={OUTLINE}
-              strokeWidth="1.1"
             />
           </g>
         );
@@ -719,7 +839,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                     y1={iso(off1, baseTop + dy, z1 - dy * 0.13)[1]}
                     x2={iso(off2, baseTop + dy, z1 - dy * 0.13)[0]}
                     y2={iso(off2, baseTop + dy, z1 - dy * 0.13)[1]}
-                    stroke={i === 2 ? '#6b8e8a' : i === 4 ? '#eceae6' : '#9aa0a8'}
+                    stroke={i === 2 ? '#4a8a92' : i === 4 ? '#eceae6' : '#9aa0a8'}
                     strokeOpacity=".9"
                     strokeWidth="1"
                   />
@@ -776,7 +896,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                 y1={iso(x1 + 3, y + 0.6, z1 + 18)[1]}
                 x2={iso(x2 - 12, y + 0.6, z1 + 18)[0]}
                 y2={iso(x2 - 12, y + 0.6, z1 + 18)[1]}
-                stroke="#6b8e8a"
+                stroke="#4a8a92"
                 strokeWidth="1"
               />
               {[24, 30, 36, 42, 50, 56, 62, 68].map((dz, i) => {
@@ -798,6 +918,63 @@ export default function Room({ onHotspot, hovered, setHovered }) {
           );
         })()}
       </Hot>
+
+      {/* Mug — drawn after laptop/paper since it sits in front (z=218) */}
+      {(() => {
+        const cx = 175,
+          cz = 218;
+        return (
+          <g>
+            <ellipse
+              cx={iso(cx, 85.4, cz + 4)[0]}
+              cy={iso(cx, 85.4, cz + 4)[1]}
+              rx="9"
+              ry="3"
+              fill="#1e1c1a"
+              opacity=".28"
+            />
+            <polygon
+              points={poly([
+                [cx - 7, 85, cz - 6],
+                [cx + 7, 85, cz - 6],
+                [cx + 7, 98, cz - 6],
+                [cx - 7, 98, cz - 6],
+              ])}
+              fill="#dedad6"
+              stroke={OUTLINE}
+              strokeWidth="0.7"
+            />
+            <polygon
+              points={poly([
+                [cx + 7, 85, cz - 6],
+                [cx + 7, 85, cz + 6],
+                [cx + 7, 98, cz + 6],
+                [cx + 7, 98, cz - 6],
+              ])}
+              fill="#bab6b0"
+              stroke={OUTLINE}
+              strokeWidth="0.7"
+            />
+            <polygon
+              points={poly([
+                [cx - 7, 98, cz - 6],
+                [cx + 7, 98, cz - 6],
+                [cx + 7, 98, cz + 6],
+                [cx - 7, 98, cz + 6],
+              ])}
+              fill="#4a8a92"
+              stroke={OUTLINE}
+              strokeWidth="0.5"
+            />
+            <path
+              d={`M ${iso(cx + 7, 88, cz - 2)[0]} ${iso(cx + 7, 88, cz - 2)[1]} q 5 -2 5 4 q 0 4 -5 4`}
+              fill="none"
+              stroke={OUTLINE}
+              strokeWidth="1.1"
+            />
+          </g>
+        );
+      })()}
 
       {/* Synth hotspot */}
       <Hot id="music" label="music" anchor={iso(60, 95, 280)}>
@@ -896,7 +1073,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                         [x1 + 2, yTop + 0.4, z1 + 10],
                       ])}
                       fill="#1e1c1a"
-                      stroke="#6b8e8a"
+                      stroke="#4a8a92"
                       strokeOpacity=".5"
                       strokeWidth="0.4"
                     />
@@ -906,7 +1083,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                         cx={iso(x1 + 8 + i * 16, yTop + 0.6, z1 + 6)[0]}
                         cy={iso(x1 + 8 + i * 16, yTop + 0.6, z1 + 6)[1]}
                         r="2.2"
-                        fill={['#6b8e8a', '#eceae6', '#6b8e8a', '#9aa0a8', '#3a3835'][i]}
+                        fill={['#4a8a92', '#eceae6', '#4a8a92', '#9aa0a8', '#3a3835'][i]}
                         stroke="#eceae6"
                         strokeWidth="0.4"
                       />
@@ -964,10 +1141,28 @@ export default function Room({ onHotspot, hovered, setHovered }) {
             <ellipse
               cx={iso(px, 0.4, pz)[0]}
               cy={iso(px, 0.4, pz)[1]}
-              rx="22"
-              ry="6"
+              rx="26"
+              ry="7"
               fill="#1e1c1a"
-              opacity=".18"
+              opacity=".22"
+            />
+            {/* Saucer base under pot — drawn before the pot so pot sits on it */}
+            <ellipse
+              cx={iso(px, 0.3, pz)[0]}
+              cy={iso(px, 0.3, pz)[1]}
+              rx="20"
+              ry="5.5"
+              fill="#3a3835"
+              stroke={OUTLINE}
+              strokeWidth="0.6"
+            />
+            <ellipse
+              cx={iso(px, 0.7, pz)[0]}
+              cy={iso(px, 0.7, pz)[1]}
+              rx="17.5"
+              ry="4.7"
+              fill="#5a5854"
+              stroke="none"
             />
             <polygon
               points={poly([
@@ -1002,6 +1197,19 @@ export default function Room({ onHotspot, hovered, setHovered }) {
               stroke={OUTLINE}
               strokeWidth="0.9"
             />
+            {/* Front face (z = pz + 12) — was missing */}
+            <polygon
+              points={poly([
+                [px - 15, 0, pz + 12],
+                [px + 15, 0, pz + 12],
+                [px + 12, 30, pz + 9],
+                [px - 12, 30, pz + 9],
+              ])}
+              fill="#92908c"
+              stroke={OUTLINE}
+              strokeWidth="0.9"
+            />
+            {/* Pot rim (top edge band, slightly darker) */}
             <polygon
               points={poly([
                 [px - 12, 30, pz - 9],
@@ -1009,9 +1217,20 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                 [px + 12, 30, pz + 9],
                 [px - 12, 30, pz + 9],
               ])}
-              fill="#54524e"
+              fill="#3e3c38"
               stroke={OUTLINE}
               strokeWidth="0.7"
+            />
+            {/* Soil inside the rim */}
+            <polygon
+              points={poly([
+                [px - 10, 30.5, pz - 7],
+                [px + 10, 30.5, pz - 7],
+                [px + 10, 30.5, pz + 7],
+                [px - 10, 30.5, pz + 7],
+              ])}
+              fill="#2a221c"
+              stroke="none"
             />
             {[
               { dx: -2, dz: -2, h: 55, w: 14, c: '#4a6e5a', rot: -12 },
@@ -1077,71 +1296,49 @@ export default function Room({ onHotspot, hovered, setHovered }) {
         );
       })()}
 
-      {/* Cables */}
+      {/* ── Elevated cables: connect to real exit points on objects ── */}
       <g style={{ pointerEvents: 'none' }}>
+        {/* Headphone cable: from headphone cup (215,4,252) up over desk front edge → across surface → into laptop right side at x=233, z=170 */}
         {(() => {
-          const [hx, hy] = iso(205, 0.8, 256);
-          const [m1x, m1y] = iso(195, 8, 226);
-          const [lapx, lapy] = iso(178, 85.6, 192);
-          const d = `M ${hx} ${hy} Q ${m1x} ${m1y}, ${lapx} ${lapy}`;
+          // exits left earcup at ~205,3,256 → arcs to desk front edge
+          const ear   = iso(205, 4, 256);
+          const lift  = iso(195, 26, 245);
+          const edge  = iso(190, 88, 234);
+          const cross = iso(208, 91, 210);
+          const port  = iso(232, 91, 175);
           return (
             <path
-              d={d}
-              fill="none"
-              stroke="#2a2825"
-              strokeWidth="1.2"
-              strokeOpacity="0.5"
-              strokeLinecap="round"
+              d={`M ${ear[0]} ${ear[1]} C ${lift[0]} ${lift[1]}, ${edge[0]} ${edge[1]}, ${cross[0]} ${cross[1]} S ${port[0]} ${port[1]}, ${port[0]} ${port[1]}`}
+              fill="none" stroke="#1a1816" strokeWidth="1.4" strokeLinecap="round" strokeOpacity=".95"
             />
           );
         })()}
+        {/* Laptop power: exits laptop back-right (235, 88, 145) → over rear desk edge → down to baseboard near outlet */}
         {(() => {
-          const a = iso(85, 64, 280);
-          const m1 = iso(152, 0.6, 302);
-          const m2 = iso(220, 0.6, 260);
-          const b = iso(268, 0.6, 222);
-          const d = `M ${a[0]} ${a[1]} C ${m1[0]} ${m1[1] + 5}, ${m2[0]} ${m2[1] + 7}, ${b[0]} ${b[1]}`;
+          const back  = iso(232, 92, 132);
+          const lift  = iso(250, 92, 122);
+          const edge  = iso(280, 88, 108);
+          const drop1 = iso(282, 50, 105);
+          const drop2 = iso(283, 16, 104);
+          const floor = iso(285, 0.6, 104);
+          // continue along baseboard toward power strip
+          const strip = iso(358, 0.6, 120);
           return (
             <path
-              d={d}
-              fill="none"
-              stroke="#2a2825"
-              strokeWidth="1.4"
-              strokeOpacity="0.5"
-              strokeLinecap="round"
+              d={`M ${back[0]} ${back[1]} C ${lift[0]} ${lift[1]}, ${edge[0]} ${edge[1]}, ${drop1[0]} ${drop1[1]} L ${drop2[0]} ${drop2[1]} L ${floor[0]} ${floor[1]} L ${strip[0]} ${strip[1]}`}
+              fill="none" stroke="#1a1816" strokeWidth="1.6" strokeLinecap="round" strokeOpacity=".95"
             />
           );
         })()}
+        {/* Synth power: exits synth back panel (60, 62, 266) → drops to floor → joins floor loop */}
         {(() => {
-          const a = iso(194, 89, 126);
-          const m1 = iso(172, 40, 106);
-          const m2 = iso(108, 5, 88);
-          const b = iso(25, 3, 45);
-          const d = `M ${a[0]} ${a[1]} C ${m1[0]} ${m1[1]}, ${m2[0]} ${m2[1]}, ${b[0]} ${b[1]}`;
+          const out  = iso(60, 64, 266);
+          const mid  = iso(60, 30, 265);
+          const land = iso(60, 0.6, 263);
           return (
             <path
-              d={d}
-              fill="none"
-              stroke="#2a2825"
-              strokeWidth="1.4"
-              strokeOpacity="0.4"
-              strokeLinecap="round"
-            />
-          );
-        })()}
-        {(() => {
-          const cx = iso(100, 0.5, 300);
-          const cx2 = iso(120, 0.5, 322);
-          const cx3 = iso(90, 0.5, 340);
-          const d = `M ${cx[0]} ${cx[1]} Q ${cx2[0]} ${cx2[1] - 7}, ${cx3[0]} ${cx3[1]} Q ${cx[0] + 5} ${cx[1] + 4}, ${cx2[0] - 3} ${cx2[1] + 5}`;
-          return (
-            <path
-              d={d}
-              fill="none"
-              stroke="#2a2825"
-              strokeWidth="1"
-              strokeOpacity="0.32"
-              strokeLinecap="round"
+              d={`M ${out[0]} ${out[1]} L ${mid[0]} ${mid[1]} L ${land[0]} ${land[1]}`}
+              fill="none" stroke="#1a1816" strokeWidth="1.8" strokeLinecap="round" strokeOpacity=".95"
             />
           );
         })()}

@@ -4,7 +4,7 @@
 
 html,
 body {
-  background: #e8e6e2;
+  background: #d8dbd6;
 }
 
 body {
@@ -20,7 +20,7 @@ body {
 
 /* Subtle paper noise texture for the room backdrop */
 .paper {
-  background-color: #e8e6e2;
+  background-color: #e4e6e2;
   background-image:
     radial-gradient(rgba(42, 40, 37, 0.04) 1px, transparent 1px),
     radial-gradient(rgba(107, 142, 138, 0.05) 1px, transparent 1px);
@@ -119,9 +119,9 @@ body {
 .room-bg {
   background: radial-gradient(
     130% 90% at 50% 10%,
-    #f0eeea 0%,
-    #e8e6e2 45%,
-    #dedad6 100%
+    #dee1dc 0%,
+    #d4d7d2 45%,
+    #c6c9c4 100%
   );
 }
 
@@ -131,7 +131,7 @@ body {
   height: 8px;
 }
 .nice-scroll::-webkit-scrollbar-thumb {
-  background: rgba(107, 142, 138, 0.35);
+  background: rgba(74, 138, 146, 0.4);
   border-radius: 999px;
 }
 
@@ -146,7 +146,7 @@ body {
   right: 50%;
   bottom: -6px;
   height: 2px;
-  background: #6b8e8a;
+  background: #4a8a92;
   transition:
     left 0.25s ease,
     right 0.25s ease;

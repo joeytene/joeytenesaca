@@ -2,6 +2,9 @@ import React from 'react';
 import { Pill, Placeholder } from './shared.jsx';
 
 export default function MoodPanel() {
+  const contrastImgUrl = new URL('../../../dist/assets/contrast-B9FPxFer.jpg', import.meta.url).href;
+  const shadowsImgUrl = new URL('../../../dist/assets/shadows-DiyP2RRx.jpg', import.meta.url).href;
+
   return (
     <div>
       <div className="mb-6">
@@ -21,7 +24,14 @@ export default function MoodPanel() {
         </div>
 
         <div className="mb-4 break-inside-avoid bg-cream-50 border border-ink-800/10 rounded-md p-3 shadow-sm tilt-r">
-          <Placeholder label="north window, 7am" h="h-40" tone="sage" />
+          <div className="w-full aspect-[4/3] rounded-md border border-ink-800/15 overflow-hidden bg-cream-100/30 relative">
+            <img
+              src={contrastImgUrl}
+              alt="North window, 7am"
+              className="absolute inset-0 w-full h-full object-contain"
+              loading="lazy"
+            />
+          </div>
           <div className="mt-2 font-serif-it text-sm text-ink-700 text-center">
             light I keep coming back to
           </div>
@@ -101,10 +111,10 @@ export default function MoodPanel() {
           </div>
           <div className="flex flex-wrap gap-1.5">
             {[
-              'Bauhaus',
-              'Dieter Rams',
-              'Donald Judd',
-              'Bridget Riley',
+              'Rei Kawakubo',
+              'Martin Margiela',
+              'Murata Shuko',
+              '',
               'Brian Eno',
               'Le Corbusier',
               'Tadao Ando',
@@ -119,7 +129,14 @@ export default function MoodPanel() {
         </div>
 
         <div className="mb-4 break-inside-avoid bg-cream-50 border border-ink-800/10 rounded-md p-3 shadow-sm tilt-l">
-          <Placeholder label="bench setup" h="h-24" tone="terra" />
+          <div className="w-full aspect-[3/4] rounded-md border border-ink-800/15 overflow-hidden bg-cream-100/30 relative">
+            <img
+              src={shadowsImgUrl}
+              alt="Bench setup"
+              className="absolute inset-0 w-full h-full object-contain"
+              loading="lazy"
+            />
+          </div>
         </div>
 
         <div className="mb-4 break-inside-avoid p-5 bg-cream-50 border border-ink-800/10 rounded-lg">
