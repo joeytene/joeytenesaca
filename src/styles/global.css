@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background: #e8e6e2;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: #2a2825;
+}
+
+.font-serif-it {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: #6a6660;
+}
+
+/* Subtle paper noise texture for the room backdrop */
+.paper {
+  background-color: #e8e6e2;
+  background-image:
+    radial-gradient(rgba(42, 40, 37, 0.04) 1px, transparent 1px),
+    radial-gradient(rgba(107, 142, 138, 0.05) 1px, transparent 1px);
+  background-size: 14px 14px, 22px 22px;
+  background-position: 0 0, 7px 11px;
+}
+
+/* Hotspot interaction */
+.hot {
+  cursor: pointer;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 0.35s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.hot:hover {
+  transform: translateY(-4px) scale(1.02);
+  filter: drop-shadow(0 10px 24px rgba(42, 40, 37, 0.22))
+    drop-shadow(0 2px 4px rgba(42, 40, 37, 0.1));
+}
+
+/* Glass modal */
+.glass {
+  background: rgba(236, 234, 230, 0.9);
+  backdrop-filter: blur(24px) saturate(110%);
+  -webkit-backdrop-filter: blur(24px) saturate(110%);
+  border: 1px solid rgba(42, 40, 37, 0.1);
+  box-shadow:
+    0 30px 80px -20px rgba(42, 40, 37, 0.28),
+    0 2px 0 rgba(255, 255, 255, 0.7) inset;
+}
+.glass-dim {
+  background: rgba(30, 28, 26, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Modal motion */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.anim-slide {
+  animation: slideUp 0.42s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.anim-fade {
+  animation: fadeIn 0.25s ease both;
+}
+
+/* Floating tooltip */
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -120%);
+  background: #2a2825;
+  color: #eceae6;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: 0 10px 24px -8px rgba(58, 45, 34, 0.45);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+.tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 8px;
+  height: 8px;
+  background: #2a2825;
+  transform: translateX(-50%) rotate(45deg);
+}
+.tooltip.show {
+  opacity: 1;
+}
+
+/* Subtle room ambient gradient */
+.room-bg {
+  background: radial-gradient(
+    130% 90% at 50% 10%,
+    #f0eeea 0%,
+    #e8e6e2 45%,
+    #dedad6 100%
+  );
+}
+
+/* Scrollbars in modals */
+.nice-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.nice-scroll::-webkit-scrollbar-thumb {
+  background: rgba(107, 142, 138, 0.35);
+  border-radius: 999px;
+}
+
+/* Footer link */
+.footlink {
+  position: relative;
+}
+.footlink::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: -6px;
+  height: 2px;
+  background: #6b8e8a;
+  transition:
+    left 0.25s ease,
+    right 0.25s ease;
+}
+.footlink:hover::after,
+.footlink.active::after {
+  left: 0;
+  right: 0;
+}
+
+/* Polaroid tilt helpers */
+.tilt-l {
+  transform: rotate(-3deg);
+}
+.tilt-r {
+  transform: rotate(2.5deg);
+}
+.tilt-xl {
+  transform: rotate(-6deg);
+}
+
