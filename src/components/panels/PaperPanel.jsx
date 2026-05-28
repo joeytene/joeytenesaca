@@ -12,11 +12,11 @@ export default function PaperPanel() {
           <a
             href="#"
             download
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-none bg-ink-800 text-cream-100 hover:bg-ink-900 transition font-medium"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-none bg-ink-900 text-cream-100 border border-ink-900 hover:shadow-hard-sm hover:-translate-y-0.5 transition font-medium"
           >
             <IconDownload size={16} /> download pdf
           </a>
-          <button className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-cream-100/80 text-ink-800 border border-ink-800/15 hover:bg-cream-100 transition font-medium">
+          <button className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-none bg-cream-100 text-ink-900 border border-ink-900 hover:shadow-hard-sm hover:-translate-y-0.5 transition font-medium">
             <IconMail size={16} /> Email me a copy
           </button>
         </div>
@@ -36,10 +36,10 @@ export default function PaperPanel() {
       </div>
 
       <div
-        className="bg-cream-50 rounded-md border border-ink-800/10 shadow-[0_30px_60px_-20px_rgba(42,40,37,.22)] p-8 text-ink-900 relative"
+        className="bg-cream-50 rounded-none border border-ink-900 shadow-hard p-8 text-ink-900 relative"
         style={{ aspectRatio: '8.5/11', maxHeight: '70vh', overflow: 'hidden' }}
       >
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-sage-500"></div>
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-terra-500"></div>
         <div className="flex justify-between items-baseline border-b border-ink-800/20 pb-3">
           <div>
             <div className="font-serif text-3xl leading-none">Your Name</div>

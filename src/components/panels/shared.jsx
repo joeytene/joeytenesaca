@@ -2,15 +2,15 @@ import React from 'react';
 
 export function Tabs({ tabs, value, onChange }) {
   return (
-    <div className="flex gap-1 p-1 rounded-full bg-cream-200/70 border border-ink-800/10 w-fit">
+    <div className="flex border border-ink-900 w-fit divide-x divide-ink-900">
       {tabs.map((t) => (
         <button
           key={t.id}
           onClick={() => onChange(t.id)}
-          className={`px-4 py-1.5 rounded-full text-sm font-medium transition flex items-center gap-2 ${
+          className={`px-4 py-1.5 text-xs font-mono uppercase tracking-wider transition flex items-center gap-2 ${
             value === t.id
-              ? 'bg-ink-800 text-cream-100 shadow-sm'
-              : 'text-ink-700 hover:bg-cream-100/60'
+              ? 'bg-ink-900 text-cream-100'
+              : 'text-ink-800 hover:bg-cream-200'
           }`}
         >
           {t.icon}
@@ -23,14 +23,14 @@ export function Tabs({ tabs, value, onChange }) {
 
 export function Pill({ children, tone = 'sage' }) {
   const tones = {
-    sage: 'bg-sage-300/50 text-ink-800 border-sage-500/30',
-    wood: 'bg-wood-300/40 text-ink-800 border-wood-500/30',
-    terra: 'bg-terra-400/30 text-ink-800 border-terra-500/30',
-    slate: 'bg-slate2-400/30 text-ink-800 border-slate2-600/30',
+    sage: 'border-sage-600 text-ink-900 bg-sage-300/40',
+    wood: 'border-wood-600 text-ink-900 bg-wood-300/40',
+    terra: 'border-terra-600 text-ink-900 bg-terra-400/30',
+    slate: 'border-slate2-600 text-ink-900 bg-slate2-400/30',
   };
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${tones[tone]}`}
+      className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-mono uppercase tracking-wide border ${tones[tone]}`}
     >
       {children}
     </span>
@@ -39,22 +39,21 @@ export function Pill({ children, tone = 'sage' }) {
 
 export function Placeholder({ label, h = 'h-32', tone = 'sage' }) {
   const bg =
-    { sage: '#a8c09a', wood: '#cda07c', terra: '#c97b56', slate: '#7b8087', cream: '#e1d2b3' }[
+    { sage: '#7d938d', wood: '#a17e64', terra: '#866850', slate: '#777b7d', cream: '#c7c6bf' }[
       tone
-    ] ?? '#a8c09a';
+    ] ?? '#7d938d';
   return (
     <div
-      className={`${h} w-full rounded-md border border-ink-800/15 relative overflow-hidden`}
+      className={`${h} w-full border border-ink-900 relative overflow-hidden`}
       style={{
-        background: `repeating-linear-gradient(45deg, ${bg} 0 8px, color-mix(in oklab, ${bg} 80%, #3a2d22) 8px 14px)`,
+        background: `repeating-linear-gradient(45deg, ${bg} 0 8px, color-mix(in oklab, ${bg} 78%, #211f1c) 8px 14px)`,
       }}
     >
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-mono text-[11px] tracking-wide bg-cream-100/90 text-ink-800 px-2 py-0.5 rounded border border-ink-800/10">
+        <span className="font-mono text-[11px] tracking-wide bg-cream-100 text-ink-900 px-2 py-0.5 border border-ink-900">
           {label}
         </span>
       </div>
     </div>
   );
 }
-

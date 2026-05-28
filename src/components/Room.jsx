@@ -20,6 +20,47 @@ export default function Room({ onHotspot, hovered, setHovered }) {
 
   const OUTLINE = '#2a2825';
 
+  // Smooth cable through 3D waypoints (Catmull-Rom → cubic Bézier), projected to
+  // screen. Place a waypoint wherever a real cable bends: a port it plugs into,
+  // an edge it drapes over, where it lands on the floor, etc. Slack/sag is baked
+  // into the waypoint spacing so runs read as limp, not taut.
+  const cablePath = (pts3d) => {
+    const P = pts3d.map((p) => iso(...p));
+    if (P.length < 2) return '';
+    let d = `M ${P[0][0]} ${P[0][1]}`;
+    for (let i = 0; i < P.length - 1; i++) {
+      const p0 = P[i - 1] || P[i];
+      const p1 = P[i];
+      const p2 = P[i + 1];
+      const p3 = P[i + 2] || p2;
+      const c1x = p1[0] + (p2[0] - p0[0]) / 6;
+      const c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      const c2x = p2[0] - (p3[0] - p1[0]) / 6;
+      const c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      d += ` C ${c1x.toFixed(1)} ${c1y.toFixed(1)}, ${c2x.toFixed(1)} ${c2y.toFixed(1)}, ${p2[0]} ${p2[1]}`;
+    }
+    return d;
+  };
+
+  // A cable = a soft contact-shadow stroke under a darker core stroke.
+  const Cable = ({ pts, w = 1.7, opacity = 0.95 }) => {
+    const d = cablePath(pts);
+    return (
+      <g>
+        <path d={d} fill="none" stroke="#0d0c0b" strokeWidth={w + 1.2}
+          strokeLinecap="round" strokeLinejoin="round" strokeOpacity={opacity * 0.3} />
+        <path d={d} fill="none" stroke="#1a1816" strokeWidth={w}
+          strokeLinecap="round" strokeLinejoin="round" strokeOpacity={opacity} />
+      </g>
+    );
+  };
+
+  // Small jack/connector dot at a plug point.
+  const Plug = ({ x, y, z, r = 2.2 }) => {
+    const [px, py] = iso(x, y, z);
+    return <circle cx={px} cy={py} r={r} fill="#1a1816" stroke="#0d0c0b" strokeWidth="0.5" />;
+  };
+
   const Hot = ({ id, label, anchor, children }) => (
     <g
       className="hot"
@@ -238,8 +279,8 @@ export default function Room({ onHotspot, hovered, setHovered }) {
             const zBase = 68 + col * 32;
             // Slightly different teal saturation per pane for variation
             const tones = [
-              ['#5a9aa0', '#4a8a92', '#6dafb4'],
-              ['#3e7a82', '#5a9aa0', '#4a8a92'],
+              ['#7d938d', '#637c76', '#8ba39d'],
+              ['#4d635d', '#7d938d', '#637c76'],
             ];
             const fill = tones[row][col];
             return (
@@ -262,8 +303,8 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                     [0, yBase + 8, zBase + 14],
                     [0, yBase + 2, zBase + 14],
                   ])}
-                  fill="#a8d0d4"
-                  opacity=".25"
+                  fill="#b6c4bf"
+                  opacity=".22"
                 />
               </g>
             );
@@ -358,11 +399,11 @@ export default function Room({ onHotspot, hovered, setHovered }) {
         />
 
         {polaroid(125, 80, 50, 55, '#9aa0a8', 'p1')}
-        {polaroid(185, 72, 55, 60, '#4a8a92', 'p2')}
+        {polaroid(185, 72, 55, 60, '#637c76', 'p2')}
         {polaroid(250, 82, 50, 50, '#cac6c0', 'p3')}
         {polaroid(310, 75, 50, 55, '#3a3835', 'p4')}
-        {polaroid(128, 150, 55, 55, '#b0c4be', 'p5')}
-        {polaroid(245, 148, 60, 60, '#7a9e9a', 'p6')}
+        {polaroid(128, 150, 55, 55, '#a9b2ad', 'p5')}
+        {polaroid(245, 148, 60, 60, '#8b9a93', 'p6')}
         {polaroid(315, 145, 45, 65, '#dedad6', 'p7')}
 
         <polygon
@@ -372,7 +413,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
             [235, 200, 0],
             [193, 200, 0],
           ])}
-          fill="#4a8a92"
+          fill="#637c76"
           stroke={OUTLINE}
           strokeOpacity=".3"
           strokeWidth="0.5"
@@ -385,7 +426,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
             y1={iso(195, y, 0)[1]}
             x2={iso(233, y, 0)[0]}
             y2={iso(233, y, 0)[1]}
-            stroke="#2e5a62"
+            stroke="#3c4044"
             strokeOpacity=".5"
             strokeWidth="0.5"
           />
@@ -517,83 +558,68 @@ export default function Room({ onHotspot, hovered, setHovered }) {
         strokeWidth="0.8"
       />
 
-      {/* ── Floor cables: drawn before desk so desk renders on top of them ── */}
-      {(() => {
-        return (
-          <g style={{ pointerEvents: 'none' }}>
-            {/* Synth power: short cable loop on floor behind synth */}
-            {(() => {
-              const start = iso(60, 0.6, 263);
-              const c1    = iso(40, 0.6, 250);
-              const c2    = iso(20, 0.6, 230);
-              const end   = iso(10, 0.6, 200);
-              return (
-                <path
-                  d={`M ${start[0]} ${start[1]} C ${c1[0]} ${c1[1]}, ${c2[0]} ${c2[1]}, ${end[0]} ${end[1]}`}
-                  fill="none" stroke="#1a1816" strokeWidth="1.8" strokeLinecap="round" strokeOpacity=".95"
-                />
-              );
-            })()}
-            {/* Small power brick on floor beside synth */}
-            <polygon
-              points={poly([
-                [12, 0.4, 198],
-                [28, 0.4, 198],
-                [28, 0.4, 208],
-                [12, 0.4, 208],
-              ])}
-              fill="#2a2825"
-              stroke="#1a1816"
-              strokeWidth="0.5"
-            />
-            <polygon
-              points={poly([
-                [12, 0.4, 198],
-                [28, 0.4, 198],
-                [28, 5,   198],
-                [12, 5,   198],
-              ])}
-              fill="#3a3835"
-              stroke="#1a1816"
-              strokeWidth="0.4"
-            />
-            {/* Coiled excess cable on floor near front of desk */}
-            {(() => {
-              const p1 = iso(245, 0.6, 256);
-              const p2 = iso(258, 0.6, 264);
-              const p3 = iso(252, 0.6, 274);
-              const p4 = iso(240, 0.6, 268);
-              return (
-                <path
-                  d={`M ${p1[0]} ${p1[1]} Q ${p2[0]} ${p2[1] - 2}, ${p3[0]} ${p3[1]} Q ${p4[0]} ${p4[1] + 2}, ${p1[0] + 2} ${p1[1] + 3}`}
-                  fill="none" stroke="#1a1816" strokeWidth="1.2" strokeLinecap="round" strokeOpacity=".85"
-                />
-              );
-            })()}
-            {/* Power strip on floor against back wall */}
-            <polygon
-              points={poly([
-                [350, 0.4, 118],
-                [385, 0.4, 118],
-                [385, 0.4, 128],
-                [350, 0.4, 128],
-              ])}
-              fill="#2a2825"
-              stroke="#1a1816"
-              strokeWidth="0.6"
-            />
-            {[356, 364, 372, 380].map((x, i) => (
-              <circle
-                key={`out-${i}`}
-                cx={iso(x, 0.6, 123)[0]}
-                cy={iso(x, 0.6, 123)[1]}
-                r="0.9"
-                fill="#0a0908"
-              />
-            ))}
-          </g>
-        );
-      })()}
+      {/* ── Floor-level cables: drawn before the desk so the desk occludes the
+             stretches that run behind/under it (correct depth sorting). ── */}
+      <g style={{ pointerEvents: 'none' }}>
+        {/* Power strip on floor against the back-right wall — the room's one outlet */}
+        <polygon
+          points={poly([
+            [350, 0.4, 118],
+            [385, 0.4, 118],
+            [385, 0.4, 128],
+            [350, 0.4, 128],
+          ])}
+          fill="#2a2825"
+          stroke="#1a1816"
+          strokeWidth="0.6"
+        />
+        {[356, 364, 372, 380].map((x, i) => (
+          <circle
+            key={`out-${i}`}
+            cx={iso(x, 0.6, 123)[0]}
+            cy={iso(x, 0.6, 123)[1]}
+            r="0.9"
+            fill="#0a0908"
+          />
+        ))}
+
+        {/* Synth power: out the back of the synth, hugs the back-left baseboard,
+            turns the corner along the back wall, and into the power strip. The
+            mid-run passes behind the desk and is occluded by it — exactly how a
+            wall-run cable would read. */}
+        <Cable
+          pts={[
+            [40, 10, 266],   // exits synth back-left (tucked behind the body)
+            [30, 1, 258],    // onto the floor behind the synth
+            [12, 1, 236],    // reaches the back-left wall
+            [8, 1, 175],     // runs along the back-left baseboard
+            [9, 1, 95],
+            [12, 1, 42],     // back corner
+            [44, 1, 14],     // turns along the back-right baseboard
+            [150, 1, 11],
+            [262, 1, 13],
+            [330, 1, 26],    // peels off the wall toward the strip
+            [351, 1, 116],
+            [356, 1, 123],   // into the power strip
+          ]}
+          w={1.8}
+        />
+
+        {/* Loose coil of slack cable on the floor beside the synth */}
+        <Cable
+          pts={[
+            [96, 1, 250],
+            [108, 1, 256],
+            [110, 1, 268],
+            [98, 1, 274],
+            [88, 1, 267],
+            [92, 1, 255],
+            [104, 1, 252],
+          ]}
+          w={1.4}
+          opacity={0.85}
+        />
+      </g>
 
       {/* Desk */}
       {(() => {
@@ -718,7 +744,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
               y1={iso(cx + 2, 105, cz + 1)[1]}
               x2={iso(cx + 5, 130, cz + 3)[0]}
               y2={iso(cx + 5, 130, cz + 3)[1]}
-              stroke="#4a8a92"
+              stroke="#637c76"
               strokeWidth="2"
             />
             <line
@@ -839,7 +865,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                     y1={iso(off1, baseTop + dy, z1 - dy * 0.13)[1]}
                     x2={iso(off2, baseTop + dy, z1 - dy * 0.13)[0]}
                     y2={iso(off2, baseTop + dy, z1 - dy * 0.13)[1]}
-                    stroke={i === 2 ? '#4a8a92' : i === 4 ? '#eceae6' : '#9aa0a8'}
+                    stroke={i === 2 ? '#637c76' : i === 4 ? '#eceae6' : '#9aa0a8'}
                     strokeOpacity=".9"
                     strokeWidth="1"
                   />
@@ -896,7 +922,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                 y1={iso(x1 + 3, y + 0.6, z1 + 18)[1]}
                 x2={iso(x2 - 12, y + 0.6, z1 + 18)[0]}
                 y2={iso(x2 - 12, y + 0.6, z1 + 18)[1]}
-                stroke="#4a8a92"
+                stroke="#637c76"
                 strokeWidth="1"
               />
               {[24, 30, 36, 42, 50, 56, 62, 68].map((dz, i) => {
@@ -962,7 +988,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                 [cx + 7, 98, cz + 6],
                 [cx - 7, 98, cz + 6],
               ])}
-              fill="#4a8a92"
+              fill="#637c76"
               stroke={OUTLINE}
               strokeWidth="0.5"
             />
@@ -1073,7 +1099,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                         [x1 + 2, yTop + 0.4, z1 + 10],
                       ])}
                       fill="#1e1c1a"
-                      stroke="#4a8a92"
+                      stroke="#637c76"
                       strokeOpacity=".5"
                       strokeWidth="0.4"
                     />
@@ -1083,7 +1109,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                         cx={iso(x1 + 8 + i * 16, yTop + 0.6, z1 + 6)[0]}
                         cy={iso(x1 + 8 + i * 16, yTop + 0.6, z1 + 6)[1]}
                         r="2.2"
-                        fill={['#4a8a92', '#eceae6', '#4a8a92', '#9aa0a8', '#3a3835'][i]}
+                        fill={['#637c76', '#eceae6', '#637c76', '#9aa0a8', '#3a3835'][i]}
                         stroke="#eceae6"
                         strokeWidth="0.4"
                       />
@@ -1296,52 +1322,60 @@ export default function Room({ onHotspot, hovered, setHovered }) {
         );
       })()}
 
-      {/* ── Elevated cables: connect to real exit points on objects ── */}
+      {/* ── Raised cables: drawn last so they sit on top of the gear they plug
+             into and the surfaces they drape over. Each ends on a real port. ── */}
       <g style={{ pointerEvents: 'none' }}>
-        {/* Headphone cable: from headphone cup (215,4,252) up over desk front edge → across surface → into laptop right side at x=233, z=170 */}
-        {(() => {
-          // exits left earcup at ~205,3,256 → arcs to desk front edge
-          const ear   = iso(205, 4, 256);
-          const lift  = iso(195, 26, 245);
-          const edge  = iso(190, 88, 234);
-          const cross = iso(208, 91, 210);
-          const port  = iso(232, 91, 175);
-          return (
-            <path
-              d={`M ${ear[0]} ${ear[1]} C ${lift[0]} ${lift[1]}, ${edge[0]} ${edge[1]}, ${cross[0]} ${cross[1]} S ${port[0]} ${port[1]}, ${port[0]} ${port[1]}`}
-              fill="none" stroke="#1a1816" strokeWidth="1.4" strokeLinecap="round" strokeOpacity=".95"
-            />
-          );
-        })()}
-        {/* Laptop power: exits laptop back-right (235, 88, 145) → over rear desk edge → down to baseboard near outlet */}
-        {(() => {
-          const back  = iso(232, 92, 132);
-          const lift  = iso(250, 92, 122);
-          const edge  = iso(280, 88, 108);
-          const drop1 = iso(282, 50, 105);
-          const drop2 = iso(283, 16, 104);
-          const floor = iso(285, 0.6, 104);
-          // continue along baseboard toward power strip
-          const strip = iso(358, 0.6, 120);
-          return (
-            <path
-              d={`M ${back[0]} ${back[1]} C ${lift[0]} ${lift[1]}, ${edge[0]} ${edge[1]}, ${drop1[0]} ${drop1[1]} L ${drop2[0]} ${drop2[1]} L ${floor[0]} ${floor[1]} L ${strip[0]} ${strip[1]}`}
-              fill="none" stroke="#1a1816" strokeWidth="1.6" strokeLinecap="round" strokeOpacity=".95"
-            />
-          );
-        })()}
-        {/* Synth power: exits synth back panel (60, 62, 266) → drops to floor → joins floor loop */}
-        {(() => {
-          const out  = iso(60, 64, 266);
-          const mid  = iso(60, 30, 265);
-          const land = iso(60, 0.6, 263);
-          return (
-            <path
-              d={`M ${out[0]} ${out[1]} L ${mid[0]} ${mid[1]} L ${land[0]} ${land[1]}`}
-              fill="none" stroke="#1a1816" strokeWidth="1.8" strokeLinecap="round" strokeOpacity=".95"
-            />
-          );
-        })()}
+        {/* Laptop power (USB-C): right-back port → runs behind the résumé → drapes
+            over the desk's right edge → down the side → along the floor to the strip. */}
+        <Cable
+          pts={[
+            [234, 90, 136],   // port on the laptop's right side, toward the back
+            [260, 87, 126],   // slack across the desktop, behind the résumé
+            [285, 85.5, 122], // over the right edge of the desk
+            [288, 50, 124],   // hangs down the desk's right face
+            [287, 1, 127],    // lands on the floor
+            [314, 1, 131],    // floor run toward the strip
+            [345, 1, 126],
+            [355, 1, 123],    // into the power strip
+          ]}
+          w={1.7}
+        />
+        <Plug x={234} y={90} z={136} />
+
+        {/* Headphone cable: jack on the laptop's front edge → drapes over the desk's
+            front lip → down to the headphones resting on the floor in front. */}
+        <Cable
+          pts={[
+            [232, 90, 196],   // headphone jack, front-right of the laptop
+            [227, 86, 216],   // slack toward the front edge
+            [223, 85.5, 235], // over the desk's front lip
+            [219, 46, 241],   // hangs down the front face
+            [216, 3, 248],    // floor
+            [212, 2, 252],    // into the headphones
+          ]}
+          w={1.4}
+        />
+        <Plug x={232} y={90} z={196} r={2} />
+
+        {/* Synth audio → laptop: out the synth's right side → across the floor →
+            climbs the desk's front-left leg → across the desktop → laptop input. */}
+        <Cable
+          pts={[
+            [106, 30, 282],   // output jack on the synth's right side
+            [110, 5, 280],    // drops to the floor
+            [122, 1.5, 266],  // floor run toward the desk
+            [134, 1.5, 244],
+            [136, 6, 232],    // base of the desk's front-left leg
+            [137, 44, 229],   // climbs the leg
+            [138, 82, 228],   // up onto the desktop
+            [150, 87, 206],   // across the surface toward the laptop
+            [159, 90, 186],   // approaches the laptop's left side
+            [163, 90, 180],   // into the laptop input
+          ]}
+          w={1.5}
+        />
+        <Plug x={106} y={30} z={282} r={2} />
+        <Plug x={163} y={90} z={180} r={2} />
       </g>
 
       {/* Tooltip */}
@@ -1356,14 +1390,14 @@ export default function Room({ onHotspot, hovered, setHovered }) {
           <div xmlns="http://www.w3.org/1999/xhtml" style={{ display: 'flex', justifyContent: 'center' }}>
             <div
               style={{
-                background: '#3a2d22',
-                color: '#f3e9d8',
-                padding: '7px 14px',
-                borderRadius: '999px',
-                font: '500 13px/1 "DM Sans", system-ui',
-                letterSpacing: '.02em',
+                background: '#211f1c',
+                color: '#e6e5df',
+                padding: '6px 12px',
+                borderRadius: '0',
+                font: '500 12px/1 "JetBrains Mono", ui-monospace, monospace',
+                letterSpacing: '.04em',
+                textTransform: 'lowercase',
                 whiteSpace: 'nowrap',
-                boxShadow: '0 12px 28px -10px rgba(58,45,34,.5)',
                 position: 'relative',
               }}
             >
@@ -1375,7 +1409,7 @@ export default function Room({ onHotspot, hovered, setHovered }) {
                   bottom: '-4px',
                   width: 8,
                   height: 8,
-                  background: '#2a2825',
+                  background: '#211f1c',
                   transform: 'translateX(-50%) rotate(45deg)',
                 }}
               ></span>

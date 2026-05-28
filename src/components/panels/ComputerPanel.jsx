@@ -52,7 +52,7 @@ export default function ComputerPanel() {
           ].map((p, i) => (
             <div
               key={i}
-              className="p-4 rounded-xl bg-cream-100/70 border border-ink-800/10 hover:border-ink-800/25 transition"
+              className="p-4 bg-cream-100 border border-ink-900 hover:shadow-hard-sm hover:-translate-y-0.5 transition"
             >
               <Placeholder label={`schematic — ${p.t.toLowerCase()}`} h="h-28" tone="slate" />
               <div className="mt-3">
@@ -86,9 +86,9 @@ export default function ComputerPanel() {
           ].map((r, i) => (
             <a
               key={i}
-              className="flex items-center gap-4 p-4 rounded-xl bg-cream-100/70 border border-ink-800/10 hover:bg-cream-100 transition cursor-pointer"
+              className="flex items-center gap-4 p-4 bg-cream-100 border border-ink-900 hover:shadow-hard-sm hover:-translate-y-0.5 transition cursor-pointer"
             >
-              <div className="w-10 h-10 rounded-lg bg-ink-800 text-cream-100 grid place-items-center">
+              <div className="w-10 h-10 rounded-none bg-ink-900 text-cream-100 grid place-items-center">
                 <IconGithub size={20} />
               </div>
               <div className="flex-1 min-w-0">
@@ -117,7 +117,7 @@ export default function ComputerPanel() {
             ['MUS 101', 'Theory & Composition', '—'],
             ['EE 372', 'Microwave Eng.', 'B+'],
           ].map(([code, title, grade], i) => (
-            <div key={i} className="p-4 rounded-xl bg-cream-100/70 border border-ink-800/10">
+            <div key={i} className="p-4 bg-cream-100 border border-ink-900">
               <div className="flex items-baseline justify-between">
                 <span className="font-mono text-xs text-ink-700">{code}</span>
                 <span className="font-mono text-xs text-terra-600">{grade}</span>

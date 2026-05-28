@@ -1,11 +1,7 @@
 import React from 'react';
 import Room from './components/Room.jsx';
 import Modal from './components/Modal.jsx';
-import {
-  IconGithub,
-  IconMail,
-  IconSparkle,
-} from './components/icons.jsx';
+import { IconGithub, IconMail } from './components/icons.jsx';
 import {
   ComputerPanel,
   PaperPanel,
@@ -36,25 +32,20 @@ export default function App() {
   const Panel = activeModal ? PANELS[activeModal] : null;
 
   return (
-    <div className="min-h-screen flex flex-col room-bg">
-      <header className="px-6 md:px-12 pt-8 flex items-start justify-between gap-6">
+    <div className="h-screen flex flex-col overflow-hidden">
+      <header className="px-6 md:px-12 pt-6 flex items-start justify-between gap-6 shrink-0">
         <div>
           <h1 className="font-serif text-4xl md:text-5xl text-ink-900 leading-none mt-2">
             joey tenesaca
-            <span className="text-sage-500 font-serif-it">.</span>
           </h1>
           <p className="text-ink-700 mt-1.5 max-w-md text-sm md:text-base">
-            i grew up in carmel, ny and study electrical engineering at stanford{' '}
-            <span className="font-serif-it"> </span>
+            i grew up in carmel, ny and study electrical engineering at stanford
           </p>
-        </div>
-        <div className="hidden md:flex items-center gap-2 text-ink-700 text-xs font-mono pt-2">
-          <IconSparkle size={14} />
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center px-2 md:px-6 py-2 md:py-4 relative">
-        <div className="w-full max-w-[1100px] aspect-[9/7.6] relative">
+      <main className="flex-1 min-h-0 flex items-center justify-center px-2 md:px-6 py-2 relative">
+        <div className="w-full h-full max-w-[1100px] relative">
           <Room
             onHotspot={(id) => setActiveModal(id)}
             hovered={hovered}
@@ -63,7 +54,7 @@ export default function App() {
         </div>
       </main>
 
-      <footer className="px-6 md:px-12 pb-8 pt-4">
+      <footer className="px-6 md:px-12 pb-6 pt-2 shrink-0">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <nav className="flex flex-wrap gap-x-7 gap-y-2 items-center">
             {FOOT_ITEMS.map((item) => (

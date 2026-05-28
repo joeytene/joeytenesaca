@@ -24,7 +24,7 @@ export default function Modal({ open, onClose, children, size = 'wide' }) {
       <div className="absolute inset-0 grid place-items-center p-4 md:p-8 overflow-y-auto nice-scroll">
         <div
           onClick={(e) => e.stopPropagation()}
-          className={`glass anim-slide rounded-2xl w-full ${
+          className={`glass anim-slide rounded-none w-full ${
             size === 'wide' ? 'max-w-5xl' : 'max-w-3xl'
           } my-auto`}
         >
@@ -32,7 +32,7 @@ export default function Modal({ open, onClose, children, size = 'wide' }) {
             <button
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-cream-100/80 border border-ink-800/15 grid place-items-center text-ink-800 hover:bg-cream-100 transition"
+              className="absolute top-5 right-5 w-9 h-9 rounded-none bg-cream-200 border border-ink-900 grid place-items-center text-ink-900 hover:bg-ink-900 hover:text-cream-100 transition"
             >
               <IconX size={16} />
             </button>

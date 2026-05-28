@@ -22,22 +22,22 @@ export default function MusicPanel() {
           i love music. here is what i've made or am inspired by
         </p>
 
-        <div className="mt-6 divide-y divide-ink-800/10 rounded-xl overflow-hidden border border-ink-800/10 bg-cream-100/60">
+        <div className="mt-6 divide-y divide-ink-900/15 overflow-hidden border border-ink-900 bg-cream-100">
           {tracks.map((tr) => {
             const isPlaying = playing === tr.n;
             return (
               <div
                 key={tr.n}
                 className={`flex items-center gap-4 px-4 py-3 transition ${
-                  isPlaying ? 'bg-terra-500/10' : 'hover:bg-cream-100/80'
+                  isPlaying ? 'bg-sage-300/30' : 'hover:bg-cream-200/60'
                 }`}
               >
                 <button
                   onClick={() => setPlaying(isPlaying ? null : tr.n)}
-                  className={`w-9 h-9 rounded-full grid place-items-center transition ${
+                  className={`w-9 h-9 rounded-none grid place-items-center transition ${
                     isPlaying
                       ? 'bg-terra-500 text-cream-100'
-                      : 'bg-ink-800 text-cream-100 hover:bg-ink-900'
+                      : 'bg-ink-900 text-cream-100 hover:bg-ink-800'
                   }`}
                 >
                   {isPlaying ? <IconPause size={14} /> : <IconPlay size={14} />}
@@ -71,7 +71,7 @@ export default function MusicPanel() {
             ].map((s, i) => (
               <div key={i} className="flex gap-3 items-center">
                 <div
-                  className="w-12 h-12 rounded-md border border-ink-800/15 shrink-0"
+                  className="w-12 h-12 rounded-none border border-ink-900 shrink-0"
                   style={{
                     background: `linear-gradient(135deg, ${s.c}, color-mix(in oklab, ${s.c} 55%, #1e1c1a))`,
                   }}
@@ -84,7 +84,7 @@ export default function MusicPanel() {
             ))}
           </div>
         </div>
-        <div className="p-4 rounded-xl bg-cream-100/70 border border-ink-800/10">
+        <div className="p-4 bg-cream-100 border border-ink-900">
           <div className="flex items-center gap-2 mb-2 text-ink-700">
             <IconHeadphone size={14} />
             <span className="text-xs font-mono uppercase tracking-wider">Studio</span>
