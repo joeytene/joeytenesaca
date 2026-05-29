@@ -1,11 +1,11 @@
 import React from 'react';
 
 const PHOTOS = [
-  { src: '/contrast.jpg',   caption: 'light I keep coming back to' },
-  { src: '/kidsuper.jpg',   caption: '' },
-  { src: '/shadows.jpg',    caption: '' },
-  { src: '/voss.jpg',       caption: '' },
-  { src: '/screenshot.png', caption: '' },
+  { src: '/contrast.jpg',   caption: 'cool colors' },
+  { src: '/kidsuper.jpg',   caption: 'greatest runway design oat' },
+  { src: '/shadows.jpg',    caption: 'these shadows are so cool' },
+  { src: '/voss.jpg',       caption: 'mcqueen ss01: such a powerful thematic runway show' },
+  { src: '/screenshot.png', caption: 'heritage' },
 ];
 
 function PhotoCard({ src, caption }) {
