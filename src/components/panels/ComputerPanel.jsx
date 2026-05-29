@@ -7,10 +7,9 @@ export default function ComputerPanel() {
   return (
     <div>
       <div className="mb-6">
-        <h2 className="font-serif text-5xl text-ink-900 leading-none">Technical Work</h2>
+        <h2 className="font-serif text-5xl text-ink-900 leading-none">projects</h2>
         <p className="text-ink-700 mt-3 max-w-md">
-          Where electrons meet — hardware tinkering, software repos, and coursework that shaped
-          how I think.
+          things that i've built
         </p>
       </div>
 

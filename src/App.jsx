@@ -77,7 +77,7 @@ export default function App() {
             ))}
           </nav>
           <div className="flex items-center gap-4 text-xs font-mono text-ink-700">
-            <span>© 2026 — handmade in HTML</span>
+            <span>© 2026 — joey tenesaca</span>
             <a
               href={GITHUB_URL}
               target="_blank"

@@ -4,8 +4,8 @@ const PHOTOS = [
   { src: '/contrast.jpg',   caption: 'cool colors' },
   { src: '/kidsuper.jpg',   caption: 'greatest runway design oat' },
   { src: '/shadows.jpg',    caption: 'these shadows are so cool' },
-  { src: '/voss.jpg',       caption: 'mcqueen ss01: such a powerful thematic runway show' },
-  { src: '/screenshot.png', caption: 'heritage' },
+  { src: '/voss.jpg',       caption: 'banger' },
+  { src: '/screenshot.png', caption: 'inspo for this website' },
 ];
 
 function PhotoCard({ src, caption }) {
