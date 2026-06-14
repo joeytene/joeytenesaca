@@ -1,103 +1,99 @@
 import React from 'react';
-import { IconHeadphone, IconPause, IconPlay } from '../icons.jsx';
+import { IconMusic, IconExternal } from '../icons.jsx';
 
-export default function MusicPanel() {
-  const [playing, setPlaying] = React.useState(null);
+/* Curated rotation. Artwork is pulled from Spotify's public image CDN.
+   To override with a local file, drop it in /public and point `art` at it. */
+const TRACKS = [
+  {
+    title: 'Good Morning, Captain',
+    artist: 'Slint',
+    album: 'Spiderland',
+    url: 'https://open.spotify.com/track/1BNZMXjqqULiV0DmFU1B8S',
+    art: 'https://i.scdn.co/image/ab67616d0000b273ca727fc0809fb501506ce413',
+    c: '#7b8087',
+  },
+  {
+    title: 'minipops 67 [120.2][source field mix]',
+    artist: 'Aphex Twin',
+    album: 'Syro',
+    url: 'https://open.spotify.com/track/00xFfMsOn9TbRe3sZcdABm',
+    art: 'https://i.scdn.co/image/ab67616d0000b2736ea96ba633bead24af562890',
+    c: '#c97b56',
+  },
+  {
+    title: 'Never Know',
+    artist: 'Jack Johnson',
+    album: 'In Between Dreams',
+    url: 'https://open.spotify.com/track/3dKFxCpVtK3g9KAB8S1FwY',
+    art: 'https://i.scdn.co/image/ab67616d0000b273628dba01c669d89586967dc5',
+    c: '#cda07c',
+  },
+  {
+    title: 'Neverending Math Equation',
+    artist: 'Sun Kil Moon',
+    album: 'Tiny Cities',
+    url: 'https://open.spotify.com/track/47MLKnVQpYNzHQps6EfULG',
+    art: 'https://i.scdn.co/image/ab67616d0000b2735b2e4e5f4f13c263ad282a80',
+    c: '#a8c09a',
+  },
+];
 
-  const tracks = [
-    { n: '01', t: 'Soft Rooms', dur: '3:42', tag: 'ambient', desc: 'felted piano + tape hiss' },
-    { n: '02', t: 'Cassette Sunday', dur: '4:18', tag: 'lo-fi', desc: 'field recordings under a Rhodes' },
-    { n: '03', t: 'North Light', dur: '2:55', tag: 'acoustic', desc: 'fingerstyle, one mic, one take' },
-    { n: '04', t: 'Slow Modular', dur: '6:11', tag: 'electronic', desc: '40-minute patch, cut to fit' },
-    { n: '05', t: 'Letter to a Friend', dur: '3:08', tag: 'voice', desc: 'demo, kept the breaths' },
-    { n: '06', t: 'Static Bloom', dur: '5:47', tag: 'electronic', desc: 'granular textures + harp samples' },
-  ];
-
+function AlbumCard({ title, artist, album, url, art, c }) {
   return (
-    <div className="grid md:grid-cols-[1.4fr_1fr] gap-8">
-      <div>
-        <div className="font-serif-it text-ink-700 text-lg"></div>
-        <h2 className="font-serif text-5xl text-ink-900 leading-none">music</h2>
-        <p className="text-ink-700 mt-3 max-w-md">
-          i love music. here is what i've made or am inspired by
-        </p>
+    <div className="group border border-ink-900 bg-cream-100 overflow-hidden hover:shadow-hard-sm hover:-translate-y-0.5 transition">
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Open "${title}" by ${artist} on Spotify`}
+        className="block relative aspect-square border-b border-ink-900"
+        style={{
+          background: `linear-gradient(135deg, ${c}, color-mix(in oklab, ${c} 50%, #1e1c1a))`,
+        }}
+      >
+        {art ? (
+          <img
+            src={art}
+            alt={`${album} — ${artist}`}
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <span className="absolute inset-0 grid place-items-center text-cream-100/70">
+            <IconMusic size={28} />
+          </span>
+        )}
+        <span className="absolute top-2 right-2 w-7 h-7 grid place-items-center bg-ink-900 text-cream-100 opacity-0 group-hover:opacity-100 transition">
+          <IconExternal size={13} />
+        </span>
+      </a>
 
-        <div className="mt-6 divide-y divide-ink-900/15 overflow-hidden border border-ink-900 bg-cream-100">
-          {tracks.map((tr) => {
-            const isPlaying = playing === tr.n;
-            return (
-              <div
-                key={tr.n}
-                className={`flex items-center gap-4 px-4 py-3 transition ${
-                  isPlaying ? 'bg-sage-300/30' : 'hover:bg-cream-200/60'
-                }`}
-              >
-                <button
-                  onClick={() => setPlaying(isPlaying ? null : tr.n)}
-                  className={`w-9 h-9 rounded-none grid place-items-center transition ${
-                    isPlaying
-                      ? 'bg-terra-500 text-cream-100'
-                      : 'bg-ink-900 text-cream-100 hover:bg-ink-800'
-                  }`}
-                >
-                  {isPlaying ? <IconPause size={14} /> : <IconPlay size={14} />}
-                </button>
-                <span className="font-mono text-xs text-ink-700 w-8">{tr.n}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-serif text-xl text-ink-900 truncate">{tr.t}</span>
-                    <span className="text-xs font-mono uppercase tracking-wider text-ink-700">
-                      {tr.tag}
-                    </span>
-                  </div>
-                  <div className="text-xs text-ink-700">{tr.desc}</div>
-                </div>
-                <div className="font-mono text-xs text-ink-700">{tr.dur}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className="space-y-6">
-        <div>
-          <h3 className="font-serif-it text-ink-700 text-base">Currently in rotation</h3>
-          <div className="mt-3 space-y-3">
-            {[
-              { t: 'Promises', a: 'Floating Points · Pharoah Sanders', c: '#a8c09a' },
-              { t: 'Hyperion', a: 'Bartók — String Quartet 4', c: '#c97b56' },
-              { t: 'Aerial', a: 'Hiroshi Yoshimura', c: '#cda07c' },
-              { t: 'For Emma', a: 'Bon Iver', c: '#7b8087' },
-            ].map((s, i) => (
-              <div key={i} className="flex gap-3 items-center">
-                <div
-                  className="w-12 h-12 rounded-none border border-ink-900 shrink-0"
-                  style={{
-                    background: `linear-gradient(135deg, ${s.c}, color-mix(in oklab, ${s.c} 55%, #1e1c1a))`,
-                  }}
-                />
-                <div>
-                  <div className="font-medium text-sm text-ink-900">{s.t}</div>
-                  <div className="text-xs text-ink-700">{s.a}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="p-4 bg-cream-100 border border-ink-900">
-          <div className="flex items-center gap-2 mb-2 text-ink-700">
-            <IconHeadphone size={14} />
-            <span className="text-xs font-mono uppercase tracking-wider">Studio</span>
-          </div>
-          <ul className="text-sm space-y-1 text-ink-800">
-            <li>· Sequential Take 5</li>
-            <li>· Martin OM-21 (1996)</li>
-            <li>· UA Apollo Twin</li>
-            <li>· A Rhodes that mostly works</li>
-          </ul>
+      <div className="px-3 py-3">
+        <div className="font-serif text-lg text-ink-900 leading-tight line-clamp-2">{title}</div>
+        <div className="text-sm text-ink-700 mt-0.5">{artist}</div>
+        <div className="font-mono text-[11px] uppercase tracking-wider text-ink-700/80 mt-1.5">
+          {album}
         </div>
       </div>
     </div>
   );
 }
 
+export default function MusicPanel() {
+  return (
+    <div>
+      <div className="mb-6">
+        <h2 className="font-serif text-5xl text-ink-900 leading-none">music</h2>
+        <p className="text-ink-700 mt-3 max-w-md">
+           some songs i like. currently making music to be posted soon
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {TRACKS.map((tr) => (
+          <AlbumCard key={tr.url} {...tr} />
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -1,25 +1,23 @@
 import React from 'react';
 
 const PHOTOS = [
-  { src: '/contrast.jpg',   caption: 'cool colors' },
-  { src: '/kidsuper.jpg',   caption: 'greatest runway design oat' },
-  { src: '/shadows.jpg',    caption: 'these shadows are so cool' },
-  { src: '/voss.jpg',       caption: 'banger' },
-  { src: '/screenshot.png', caption: 'inspo for this website' },
+  { src: '/contrast.jpg' },
+  { src: '/kidsuper.jpg' },
+  { src: '/shadows.jpg' },
+  { src: '/voss.jpg' },
+  { src: '/screenshot.png' },
+  { src: '/blueandorange.png' },
 ];
 
-function PhotoCard({ src, caption }) {
+function PhotoCard({ src }) {
   return (
     <div className="mb-4 break-inside-avoid bg-cream-50 border border-ink-900 rounded-none overflow-hidden hover:shadow-hard-sm hover:-translate-y-0.5 transition">
       <img
         src={src}
-        alt={caption}
+        alt=""
         className="w-full h-auto block"
         loading="lazy"
       />
-      <div className="px-3 py-2 min-h-[28px]">
-        <span className="font-serif-it text-xs text-ink-700">{caption}</span>
-      </div>
     </div>
   );
 }
